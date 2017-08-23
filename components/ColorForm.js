@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 		paddingTop:20
 	},
 	txtInput:{
-		flex:4,
+		flex:1,
 		borderWidth:2,
 		borderRadius:5,
 		margin:5,
@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
 		fontSize:30
 	},
 	button:{
-		flex:1,
 		fontSize:30,
 		backgroundColor:'darkblue',
 		margin:5,

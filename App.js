@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {AppRegistry,StyleSheet, ListView ,Text} from 'react-native'
+import {AppRegistry,StyleSheet, ListView ,Text,AsyncStorage} from 'react-native'
 import ColorButton from './components/ColorButton'
 import ColorForm from './components/ColorForm'
 
@@ -9,7 +9,7 @@ export default class App extends React.Component {
       this.ds = new ListView.DataSource({
         rowHasChanged: (r1,r2) => r1 !== r2
       })
-        const avilableColors = ['green','red',"blue",'white','pink']
+        const avilableColors = ['green','white','pink']
 
       this.state = {
         backgroundColor:'green',
@@ -20,7 +20,31 @@ export default class App extends React.Component {
         this.changeColor =  this.changeColor.bind(this)
         this.newColor = this.newColor.bind(this)
        }
+   componentDidMount(){
+    AsyncStorage.getItem(
+      '@ColorListStore:colors',
+      (err,data) => {
+        if (err) {
+          console.log("err loading colors",err)
+        }else{
+          const avilableColors = JSON.parse(data)
+          this.setState({
+            avilableColors,
+            dataSource :this.ds.cloneWithRows(avilableColors)
+          })
+        }
+      }
 
+      )
+        
+   }    
+
+   saveColors(colors){
+    AsyncStorage.setItem(
+      '@ColorListStore:colors',
+      JSON.stringify(colors)
+      )
+   }    
 
    changeColor(backgroundColor){
           this.setState ({backgroundColor})
@@ -36,6 +60,7 @@ export default class App extends React.Component {
         dataSource:this.ds.cloneWithRows(avilableColors)
 
      })
+      this.saveColors(avilableColors)
     }    
 
 
